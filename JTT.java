@@ -15,52 +15,62 @@ class dad extends WindowAdapter
 class Magic extends JFrame implements ActionListener 
 // ActionListener listens for events like button pressing
 {
-  JButton swim, magic;
+  JButton makeMove;
   JTextField picker;
-  ocean pacific;
-  fish [] school;
+  gameBoard board;
+  space [] spaces;
+  int player=0;
 
 
   // this is the one function from ActionListener
   public void actionPerformed(ActionEvent e)
   {
-    if(e.getSource()==swim) 
-      pacific.swim();
-    else if(e.getSource()==magic)
+    if(e.getSource()==makeMove)
     {
       String numberstring=picker.getText();
       numberstring=numberstring.trim();
       int number=Integer.parseInt(numberstring);
-System.out.println("Fish number "+number);
-      if(0<=number && number<school.length) // is it in range?
-        school[number].setRandomColor();
-      pacific.repaint(); // redraw the ocean
+      if(0<=number && number<spaces.length) { // is it in range?
+        if(spaces[number-1].isOpen())
+          spaces[number-1].setNewColor(player);
+      }
+      board.repaint(); // redraw the gameBoard
+      player=(player+1)%2;
     }
   }
 
-  class fish
+  class space
   {
     int x,y,size;
     Color color;
 
-    public fish(int xin, int yin, int sizein, Color c)
+    public space(int xin, int yin, int sizein, Color c)
     {
       x=xin; y=yin; size=sizein; color=c;
     }
 
-    public void swim()
+    public void makeMove()
     {
       x=x+2+size/100;
       if(x>1000) x=-size;
     }
 
-    public void setRandomColor()
+    public void setNewColor(int player)
     {
-      color=new Color(
-          (int)(256*Math.random()),
-          (int)(256*Math.random()),
-          (int)(256*Math.random())
+      if (player==0) {
+        color=new Color(
+          (int)(256),
+          (int)(0),
+          (int)(0)
         );
+      }
+      if (player==1) {
+        color=new Color(
+          (int)(0),
+          (int)(256),
+          (int)(0)
+        );
+      }
     }
 
     public void draw(Graphics g)
@@ -81,17 +91,17 @@ System.out.println("Fish number "+number);
   }
 
   // artwork
-  class ocean extends JPanel
+  class gameBoard extends JPanel
   {
-    public ocean()
+    public gameBoard()
     {
       setSize(1000,500);
     }
 
     public void swim()
     {
-      for(int i=0; i<school.length; i++)
-        school[i].swim();
+      for(int i=0; i<spaces.length; i++)
+        spaces[i].swim();
       repaint();
     }
 
@@ -100,14 +110,14 @@ System.out.println("Fish number "+number);
     {
       g.setColor(Color.blue);
       g.fillRect(0,0, 1000,500);
-      for(int i=0; i<school.length; i++)
-        school[i].draw(g);
+      for(int i=0; i<spaces.length; i++)
+        spaces[i].draw(g);
     }
   }
 
   public Magic() 
   {
-    setTitle("Our best fish program!");
+    setTitle("Our best space program!");
     setSize(1000,600);
     setLocation(50,50);
     addWindowListener(new dad());
@@ -115,15 +125,15 @@ System.out.println("Fish number "+number);
     Container glass=getContentPane();
     glass.setLayout( new BorderLayout() ); // Layout manager
     
-    magic=new JButton("Magic Rainbow!");
-    magic.addActionListener(this);
+    makeMove=new JButton("Magic Rainbow!");
+    makeMove.addActionListener(this);
     swim=new JButton("Just Keep Swimming!");
     swim.addActionListener(this);
     picker=new JTextField("      0 ");
-    pacific=new ocean();
+    board=new gameBoard();
 
-    school=new fish[10];
-    for(int i=0; i<school.length; i++)
+    spaces=new space[10];
+    for(int i=0; i<spaces.length; i++)
     {
       int fsize= (int)(10+500*Math.random());
       int fx=(int)((1000-fsize)*Math.random());
@@ -133,15 +143,15 @@ System.out.println("Fish number "+number);
           (int)(256*Math.random()),
           (int)(256*Math.random())
         );
-      school[i]=new fish(fx,fy, fsize, fc);
+      spaces[i]=new space(fx,fy, fsize, fc);
     }
 
     JPanel p=new JPanel();
     p.setLayout( new BorderLayout() );
     p.add(picker,"West");
-    p.add(magic,"Center");
+    p.add(makeMove,"Center");
 
-    glass.add(pacific,"Center");
+    glass.add(board,"Center");
     glass.add(swim,"North");
     glass.add(p,"South");
 
