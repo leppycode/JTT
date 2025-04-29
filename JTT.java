@@ -21,6 +21,7 @@ class Magic extends JFrame implements ActionListener
   gameBoard board;
   space [] spaces;
   int player=1;
+  int computerTurn=0;
 
 
   // this is the one function from ActionListener
@@ -28,22 +29,43 @@ class Magic extends JFrame implements ActionListener
   {
     if(e.getSource()==makeMove)
     {
-      String numberstring=picker.getText();
-      numberstring=numberstring.trim();
-      int number=Integer.parseInt(numberstring);
-      if(0<=number && number<=spaces.length) { // is it in range?
-        if(spaces[number-1].isOpen()) {
-          spaces[number-1].setNewColor(player);
-		  checkGameEnd();
-		  if (player==1)
-			player++;
-		  else
-		    player--;
+      if (player==computerTurn)
+		  computerMove();
+	  else {
+		String numberstring=picker.getText();
+		numberstring=numberstring.trim();
+		int number=Integer.parseInt(numberstring);
+		if(0<=number && number<=spaces.length) { // is it in range?
+			if(spaces[number-1].isOpen()) {
+			spaces[number-1].setNewColor(player);
+			checkGameEnd();
+			if (player==1)
+				player++;
+			else
+				player--;
+			}
 		}
-      }
+	  }
       board.repaint(); // redraw the gameBoard
     }
   }
+  public void computerMove() {
+	  for (int i=0	;i<9;i++){
+		  if(0<=i && i<=spaces.length) { // is it in range?
+			if(spaces[i].isOpen()) {
+			spaces[i].setNewColor(player);
+			checkGameEnd();
+			if (player==1)
+				player++;
+			else
+				player--;
+			break;
+			}
+		}
+	  }
+      board.repaint(); // redraw the gameBoard
+  }
+  
 	public void checkGameEnd () {
 		if (checkLine(0,1,2)) {
 			setVisible(false);
@@ -247,7 +269,7 @@ class Magic extends JFrame implements ActionListener
     }
   }
 
-  public Magic() 
+  public Magic(int computer) 
   {
     setTitle("Our best space program!");
     setSize(1000,600);
@@ -261,7 +283,7 @@ class Magic extends JFrame implements ActionListener
     makeMove.addActionListener(this);
     picker=new JTextField("      0 ");
     board=new gameBoard();
-
+	computerTurn=computer;
       spaces=new space[9];
       int fsize= (int)(100);
       int fx=(int)(90);
@@ -308,9 +330,11 @@ class Magic extends JFrame implements ActionListener
 
   public static void main(String [] args)
   {
-    int playAgain=-1;
+    int playAgain=-1; int computer=0; 
 	Scanner scan=new Scanner(System.in);
-	Magic snot=new Magic();
+	System.out.println("Would you like the comptuer to play first (1) or second (2)?");
+	computer=scan.nextInt();
+	Magic snot=new Magic(computer);
 	while ((playAgain!=0)&&(playAgain!=1)) {
 		playAgain=scan.nextInt();
 	}
@@ -323,6 +347,10 @@ class Magic extends JFrame implements ActionListener
 	}
   }
   public static void newGame() {
-	Magic beans=new Magic();
+	int computer=0;
+	Scanner scan=new Scanner(System.in);
+	System.out.println("Would you like the comptuer to play first (1) or second (2)?");
+	computer=scan.nextInt(); 
+	Magic beans=new Magic(computer);
   }
 }
