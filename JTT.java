@@ -16,37 +16,42 @@ class dad extends WindowAdapter
 class Magic extends JFrame implements ActionListener 
 // ActionListener listens for events like button pressing
 {
-  JButton swim, magic;
+  JButton makeMove;
   JTextField picker;
-  ocean pacific;
-  fish [] school;
+  gameBoard board;
+  space [] spaces;
+  int player=1;
 
 
   // this is the one function from ActionListener
   public void actionPerformed(ActionEvent e)
   {
-    if(e.getSource()==swim) 
-      pacific.swim();
-    else if(e.getSource()==magic)
+    if(e.getSource()==makeMove)
     {
       String numberstring=picker.getText();
       numberstring=numberstring.trim();
       int number=Integer.parseInt(numberstring);
-System.out.println("Fish number "+number);
-      if(0<=number && number<school.length) // is it in range?
-        school[number].setRandomColor();
-      pacific.repaint(); // redraw the ocean
+      if(0<=number && number<spaces.length) { // is it in range?
+        if(spaces[number-1].isOpen()) {
+          spaces[number-1].setNewColor(player);
+		  if (player==1)
+			player++;
+		  else
+		    player--;
+		}
+      }
+      board.repaint(); // redraw the gameBoard
     }
   }
 
-  class fish
+  class space
   {
-    int x,y,size;
+    int x,y,size, owner;
     Color color;
 
-    public fish(int xin, int yin, int sizein, Color c)
+    public space(int xin, int yin, int sizein, Color c)
     {
-      x=xin; y=yin; size=sizein; color=c;
+      x=xin; y=yin; size=sizein; color=Color.blue; owner=0;
     }
 
     public void swim()
@@ -55,18 +60,29 @@ System.out.println("Fish number "+number);
       if(x>1000) x=-size;
     }
 
-    public void setRandomColor()
+    public void setNewColor(int player)
     {
-      color=new Color(
-          (int)(256*Math.random()),
-          (int)(256*Math.random()),
-          (int)(256*Math.random())
+      if (player==1) {
+        color=new Color(
+          (int)(255),
+          (int)(0),
+          (int)(0)
         );
+		owner=1;
+      }
+      if (player==2) {
+        color=new Color(
+          (int)(0),
+          (int)(255),
+          (int)(0)
+        );
+		owner=2;
+      } 
     }
 
     public void draw(Graphics g)
     {
-      g.setColor(Color.blue);
+      g.setColor(color);
       int ht=size;
       g.fillOval(x,y,size,ht);
       //1 to 2    
@@ -118,20 +134,26 @@ System.out.println("Fish number "+number);
 
 
     }
+	public boolean isOpen() {
+		if (owner==0) {
+			return true;
+		}
+		return false;
+	}
   }
 
   // artwork
-  class ocean extends JPanel
+  class gameBoard extends JPanel
   {
-    public ocean()
+    public gameBoard()
     {
       setSize(1000,500);
     }
 
     public void swim()
     {
-      for(int i=0; i<school.length; i++)
-        school[i].swim();
+      for(int i=0; i<spaces.length; i++)
+        spaces[i].swim();
       repaint();
     }
 
@@ -140,14 +162,14 @@ System.out.println("Fish number "+number);
     {
       g.setColor(Color.white);
       g.fillRect(0,0, 1000,500);
-      for(int i=0; i<school.length; i++)
-        school[i].draw(g);
+      for(int i=0; i<spaces.length; i++)
+        spaces[i].draw(g);
     }
   }
 
   public Magic() 
   {
-    setTitle("Our best fish program!");
+    setTitle("Our best space program!");
     setSize(1000,600);
     setLocation(50,50);
     addWindowListener(new dad());
@@ -155,41 +177,39 @@ System.out.println("Fish number "+number);
     Container glass=getContentPane();
     glass.setLayout( new BorderLayout() ); // Layout manager
     
-    magic=new JButton("Magic Rainbow!");
-    magic.addActionListener(this);
-    swim=new JButton("Just Keep Swimming!");
-    swim.addActionListener(this);
+    makeMove=new JButton("Magic Rainbow!");
+    makeMove.addActionListener(this);
     picker=new JTextField("      0 ");
-    pacific=new ocean();
+    board=new gameBoard();
 
-      school=new fish[9];
+      spaces=new space[9];
       int fsize= (int)(100);
       int fx=(int)(90);
       int fy=(int)(90);
       Color fc=(Color.blue);
 
 
-      school[0]=new fish((fx),(fy), fsize, fc);
+      spaces[0]=new space((fx),(fy), fsize, fc);
       
-      school[1]=new fish((5*fx),(fy), fsize, fc);
+      spaces[1]=new space((5*fx),(fy), fsize, fc);
 
-      school[2]=new fish((9*fx),(fy), fsize, fc);
+      spaces[2]=new space((9*fx),(fy), fsize, fc);
 
       fy=(int)(250);
 
-      school[3]=new fish(3*fx,fy, fsize, fc);
+      spaces[3]=new space(3*fx,fy, fsize, fc);
 
-      school[4]=new fish((5*fx),(fy), fsize, fc);
+      spaces[4]=new space((5*fx),(fy), fsize, fc);
 
-      school[5]=new fish((7*fx),(fy), fsize, fc);
+      spaces[5]=new space((7*fx),(fy), fsize, fc);
 
       fy = (int)(390);
 
-      school[6]=new fish((fx),(fy), fsize, fc);
+      spaces[6]=new space((fx),(fy), fsize, fc);
 
-      school[7]=new fish((5*fx),(fy), fsize, fc);
+      spaces[7]=new space((5*fx),(fy), fsize, fc);
 
-      school[8]=new fish((9*fx),(fy), fsize, fc);
+      spaces[8]=new space((9*fx),(fy), fsize, fc);
 
      
 
@@ -197,10 +217,10 @@ System.out.println("Fish number "+number);
     JPanel p=new JPanel();
     p.setLayout( new BorderLayout() );
     p.add(picker,"West");
-    p.add(magic,"Center");
+    p.add(makeMove,"Center");
 
-    glass.add(pacific,"Center");
-    glass.add(swim,"North");
+    glass.add(board,"Center");
+ 
     glass.add(p,"South");
 
     setVisible(true);
