@@ -31,7 +31,7 @@ class Magic extends JFrame implements ActionListener
       String numberstring=picker.getText();
       numberstring=numberstring.trim();
       int number=Integer.parseInt(numberstring);
-      if(0<=number && number<spaces.length) { // is it in range?
+      if(0<=number && number<=spaces.length) { // is it in range?
         if(spaces[number-1].isOpen()) {
           spaces[number-1].setNewColor(player);
 		  checkGameEnd();
