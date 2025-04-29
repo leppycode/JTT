@@ -1,3 +1,4 @@
+
 import java.io.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -65,18 +66,57 @@ System.out.println("Fish number "+number);
 
     public void draw(Graphics g)
     {
-      g.setColor(color);
-      int ht=size/3;
-      g.fillOval(x,y, size, ht);
-      int [] xlist={x+size/5, x-size/5, x-size/5};
-      int [] ylist={y+ht/2, y, y+ht};
-      g.fillPolygon(xlist, ylist, 3);
-      int eyex=x+size/2+size/8, eyey=y+size/12;
-      int eyesize=ht/2;
-      g.setColor(Color.white);
-      g.fillOval(eyex,eyey, eyesize, eyesize);
-      g.setColor(Color.black);
-      g.fillOval(eyex+5,eyey+5, eyesize-10, eyesize-10);
+      g.setColor(Color.blue);
+      int ht=size;
+      g.fillOval(x,y,size,ht);
+      //1 to 2    
+      g.drawLine(140, 140, 500, 140);
+      //2 to 3
+    
+
+      g.drawLine(140, 140, 500,300);
+
+      g.drawLine(140, 140, 310,300);
+
+      g.drawLine(500, 140, 860, 140);
+
+      //3 to 6
+      g.drawLine(860, 140, 670, 300);
+
+      g.drawLine(860, 140, 500,300);
+      //6 to 5
+      g.drawLine(670,300,500,300);
+      //5 to 4
+      g.drawLine(470,300, 310,300);
+
+     
+      //1 to 5
+     
+      g.drawLine(310,300, 120,440);
+
+      g.drawLine(140,440,500,440);
+
+      g.drawLine(500,440,670,440);
+
+      g.drawLine(670,440,860,440);
+
+      g.drawLine(860,440,500,300);
+
+      g.drawLine(860,440,670, 300);
+
+      g.drawLine(140,440, 500,300);
+
+      g.drawLine(500,440,310,300);
+
+      g.drawLine(500,440,670,300);
+
+      g.drawLine(500,140,310,300);
+
+      g.drawLine(500,140,670,300);
+
+
+
+
     }
   }
 
@@ -98,7 +138,7 @@ System.out.println("Fish number "+number);
     public void paintComponent(Graphics g)
     // Graphics g is like Harold's purple crayon
     {
-      g.setColor(Color.blue);
+      g.setColor(Color.white);
       g.fillRect(0,0, 1000,500);
       for(int i=0; i<school.length; i++)
         school[i].draw(g);
@@ -122,19 +162,37 @@ System.out.println("Fish number "+number);
     picker=new JTextField("      0 ");
     pacific=new ocean();
 
-    school=new fish[10];
-    for(int i=0; i<school.length; i++)
-    {
-      int fsize= (int)(10+500*Math.random());
-      int fx=(int)((1000-fsize)*Math.random());
-      int fy=(int)((600-fsize/3)*Math.random());
-      Color fc=new Color(
-          (int)(256*Math.random()),
-          (int)(256*Math.random()),
-          (int)(256*Math.random())
-        );
-      school[i]=new fish(fx,fy, fsize, fc);
-    }
+      school=new fish[9];
+      int fsize= (int)(100);
+      int fx=(int)(90);
+      int fy=(int)(90);
+      Color fc=(Color.blue);
+
+
+      school[0]=new fish((fx),(fy), fsize, fc);
+      
+      school[1]=new fish((5*fx),(fy), fsize, fc);
+
+      school[2]=new fish((9*fx),(fy), fsize, fc);
+
+      fy=(int)(250);
+
+      school[3]=new fish(3*fx,fy, fsize, fc);
+
+      school[4]=new fish((5*fx),(fy), fsize, fc);
+
+      school[5]=new fish((7*fx),(fy), fsize, fc);
+
+      fy = (int)(390);
+
+      school[6]=new fish((fx),(fy), fsize, fc);
+
+      school[7]=new fish((5*fx),(fy), fsize, fc);
+
+      school[8]=new fish((9*fx),(fy), fsize, fc);
+
+     
+
 
     JPanel p=new JPanel();
     p.setLayout( new BorderLayout() );
