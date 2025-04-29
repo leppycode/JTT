@@ -1,4 +1,4 @@
-
+import java.util.*;
 import java.io.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -47,47 +47,56 @@ class Magic extends JFrame implements ActionListener
 	public void checkGameEnd () {
 		if (checkLine(0,1,2)) {
 			setVisible(false);
-			System.out.println("Victory to player "+player);			
+			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();	
 		}	
 		if (checkLine(3,4,5)){
 			setVisible(false);
-			System.out.println("Victory to player "+player);			
+			System.out.println("Victory to player "+player);
+		System.out.println("Type 1 to play again, 0 to quit");			
 			dispose();
 		}
 		if (checkLine(6,7,8)){
 			setVisible(false); 
 			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 		if (checkLine(0,4,8)){
 			setVisible(false);
 			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 		if (checkLine(2,4,6)){
 			setVisible(false); 
 			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 		if (checkLine(0,3,7)){
 			setVisible(false);
 			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 		if (checkLine(2,5,7)){
 			setVisible(false); 
 			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 		if (checkLine(1,3,6)){
 			setVisible(false); 
 			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 		if (checkLine(1,5,8)){
 			setVisible(false); 
 			System.out.println("Victory to player "+player);
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 		int thing=1;
@@ -97,6 +106,7 @@ class Magic extends JFrame implements ActionListener
 		if (thing!=0){
 			setVisible(false); 
 			System.out.println("It's a tie");
+			System.out.println("Type 1 to play again, 0 to quit");
 			dispose();
 		}
 	}
@@ -298,6 +308,21 @@ class Magic extends JFrame implements ActionListener
 
   public static void main(String [] args)
   {
-    Magic snot=new Magic();
+    int playAgain=-1;
+	Scanner scan=new Scanner(System.in);
+	Magic snot=new Magic();
+	while ((playAgain!=0)&&(playAgain!=1)) {
+		playAgain=scan.nextInt();
+	}
+	while (playAgain==1) {
+		playAgain=-1;
+		newGame();
+		while ((playAgain!=0)&&(playAgain!=1)) {
+			playAgain=scan.nextInt();
+		}
+	}
+  }
+  public static void newGame() {
+	Magic beans=new Magic();
   }
 }
