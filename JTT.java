@@ -34,6 +34,7 @@ class Magic extends JFrame implements ActionListener
       if(0<=number && number<spaces.length) { // is it in range?
         if(spaces[number-1].isOpen()) {
           spaces[number-1].setNewColor(player);
+		  checkGameEnd();
 		  if (player==1)
 			player++;
 		  else
@@ -43,6 +44,72 @@ class Magic extends JFrame implements ActionListener
       board.repaint(); // redraw the gameBoard
     }
   }
+	public void checkGameEnd () {
+		if (checkLine(0,1,2)) {
+			setVisible(false);
+			System.out.println("Victory to player "+player);			
+			dispose();	
+		}	
+		if (checkLine(3,4,5)){
+			setVisible(false);
+			System.out.println("Victory to player "+player);			
+			dispose();
+		}
+		if (checkLine(6,7,8)){
+			setVisible(false); 
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+		if (checkLine(0,4,8)){
+			setVisible(false);
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+		if (checkLine(2,4,6)){
+			setVisible(false); 
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+		if (checkLine(0,3,7)){
+			setVisible(false);
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+		if (checkLine(2,5,7)){
+			setVisible(false); 
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+		if (checkLine(1,3,6)){
+			setVisible(false); 
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+		if (checkLine(1,5,8)){
+			setVisible(false); 
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+		int thing=1;
+		for (int i=0;i<9;i++) {
+			thing*=spaces[i].getOwner();
+		}
+		if (thing!=0){
+			setVisible(false); 
+			System.out.println("Victory to player "+player);
+			dispose();
+		}
+	}
+	public boolean checkLine(int a, int b, int c) {
+		if (spaces[a].getOwner()==spaces[b].getOwner()){
+			if (spaces[c].getOwner()!=0) {
+				if (spaces[a].getOwner()==spaces[c].getOwner())
+					return true;
+			}
+		}
+		return false;
+	}
+ 
 
   class space
   {
@@ -139,6 +206,9 @@ class Magic extends JFrame implements ActionListener
 			return true;
 		}
 		return false;
+	}
+	public int getOwner() {
+		return owner;
 	}
   }
 
