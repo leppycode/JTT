@@ -96,7 +96,7 @@ class Magic extends JFrame implements ActionListener
 		}
 		if (thing!=0){
 			setVisible(false); 
-			System.out.println("Victory to player "+player);
+			System.out.println("It's a tie");
 			dispose();
 		}
 	}
